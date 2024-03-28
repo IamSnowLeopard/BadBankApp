@@ -1,0 +1,107 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Orbitron:wght@400..900&display=swap');
+
+
+.btn-primary {
+  background-color: #aef4c5;
+  border-color:#aef4c5;
+}
+
+.btn-primary:disabled {
+  background-color: #aef4c5;
+  border-color:#aef4c5;
+}
+
+.withdraw-btn-primary:hover {
+  background-color: #f73737e4;
+  border-color:#f73737e4;
+}
+
+.withdraw-btn-primary:disabled {
+  background-color: #f4aeae;
+  border-color:#f4aeae;
+}
+
+.withdraw-btn-primary {
+  background-color: #f4aeae;
+  border-color:#f4aeae;
+}
+
+.btn-primary:hover {
+  background-color: #07b930; /* Darker shade for hover state */
+  border-color: #07b930;
+}
+
+.btn-info {
+  background-color: #aef4c5; /* Darker shade for hover state */
+  border-color: #aef4c5;
+}
+
+.btn-info:hover {
+  background-color: #07b930; /* Darker shade for hover state */
+  border-color: #07b930;
+}
+
+.nav-link {
+  position: relative;
+}
+
+.nav-link:hover {
+  background-color: #aef4c5; /* Light grey background on hover */
+  color: #000; /* Change text color as needed */
+  border-radius: 5px; /* Optional: adds rounded corners */
+  font-weight: bold;
+}
+
+.nav-link:hover::after {
+  content: attr(data-description);
+  position: absolute;
+  bottom: -25px;
+  left: 0;
+  background-color: black;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  white-space: nowrap; 
+}
+
+.active-nav-link {
+  font-weight: bold;
+}
+
+.errorMessage {
+  color: red;
+}
+
+.orbitron-font {
+  font-family: 'Orbitron', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 900; /* Adjust based on your preference */
+  font-style: normal;
+  font-size: 72px;
+  text-shadow: 
+    -1px -1px 0 #000,  
+     1px -1px 0 #000,
+    -1px  1px 0 #000,
+     1px  1px 0 #000;
+}
+
+.dissolve-in {
+  animation: dissolveIn 1.0s ease-out forwards;
+  opacity: 0;
+}
+
+@keyframes dissolveIn {
+  to {
+    opacity: 1;
+  }
+}
+
+.josefin-sans {
+  font-family: "Josefin Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-size: 24px;
+  font-style: normal;}
+

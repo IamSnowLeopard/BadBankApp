@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useUserActivities } from "./UserActivitiesContext";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import axios from "axios";
 
 // Component to create a new account
 const CreateAccount = () => {
@@ -27,10 +28,15 @@ const CreateAccount = () => {
   });
 
   // Handle form submission
-  const handleSubmit = (values, { setSubmitting, resetForm }) => {
-    // Simulate a server response delay
-    setTimeout(() => {
-      console.log(values); // Log values for debugging
+  const handleSubmit = async (values, { setSubmitting, resetForm }) => {
+    try {
+      // Send POST request to the backend to create a new account
+      const response = await axios.post(
+        "http://localhost:5001/auth/create-account",
+        values
+      );
+
+      console.log(response.data); // Log response data for debugging
       addActivity({
         type: "New account",
         message: `Account ${values.email} created`,
@@ -42,7 +48,10 @@ const CreateAccount = () => {
       setSubmitting(false);
       // Reset the form fields
       resetForm({ values: "" });
-    }, 400);
+    } catch (error) {
+      console.error("There was an error creating the account!", error);
+      setSubmitting(false);
+    }
   };
 
   // Handler to reset the form and allow another account creation

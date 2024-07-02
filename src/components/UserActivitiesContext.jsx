@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
+import axios from "axios";
 
 const UserActivitiesContext = createContext();
 
@@ -6,18 +7,53 @@ export const useUserActivities = () => useContext(UserActivitiesContext);
 
 export const UserActivitiesProvider = ({ children }) => {
   const [activities, setActivities] = useState([]);
-  const [balance, setBalance] = useState(100); // Start with an initial balance
+  const [balance, setBalance] = useState(0);
 
-  const addActivity = (activity) => {
-    setActivities((currentActivities) => [...currentActivities, activity]);
-    if (activity.type === "Deposit") {
-      setBalance(
-        (currentBalance) => currentBalance + parseFloat(activity.amount)
+  // Retrieve token and userId from localStorage
+  const token = localStorage.getItem("token");
+  const userId = localStorage.getItem("userId");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:5001/user/${userId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setBalance(response.data.balance);
+        setActivities(response.data.transactions);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+    if (userId && token) {
+      fetchData();
+    }
+  }, [userId, token]);
+
+  const addActivity = async (activity) => {
+    try {
+      const response = await axios.post(
+        `http://localhost:5001/transactions/${activity.type.toLowerCase()}`,
+        {
+          userId,
+          amount: parseFloat(activity.amount),
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
-    } else if (activity.type === "Withdrawal") {
-      setBalance(
-        (currentBalance) => currentBalance - parseFloat(activity.amount)
-      );
+      const newActivity = response.data.transaction;
+      setActivities((currentActivities) => [...currentActivities, newActivity]);
+      setBalance(newActivity.balanceAfterTransaction);
+    } catch (error) {
+      console.error(`Error processing ${activity.type}:`, error);
     }
   };
 

@@ -1,6 +1,7 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 // Defines the component for the login form
 const Login = () => {
@@ -21,19 +22,28 @@ const Login = () => {
   });
 
   // Handles form submission
-  const handleSubmit = (values, { setSubmitting }) => {
-    setTimeout(() => {
-      console.log("Login Info:", values);
-      const loginSuccess = true;
-      if (loginSuccess) {
-        navigate("/all-data"); // Redirect to the All Data page
-      }
+  const handleSubmit = async (values, { setSubmitting }) => {
+    try {
+      // Send POST request to the backend to login
+      const response = await axios.post(
+        "http://localhost:5001/auth/login",
+        values
+      ); // Ensure the port is 5001
+
+      console.log("Login Info:", response.data);
+      const { token, userId } = response.data;
+      localStorage.setItem("token", token);
+      localStorage.setItem("userId", userId);
+
+      navigate("/all-data"); // Redirect to the All Data page
       setSubmitting(false); // Reset the form's submitting state
-    }, 400); // Simulates a delay, e.g., from a server response
+    } catch (error) {
+      console.error("There was an error logging in!", error);
+      setSubmitting(false);
+    }
   };
 
   return (
-    //form
     <div
       className="card mx-auto"
       style={{ maxWidth: "400px", marginTop: "20px" }}

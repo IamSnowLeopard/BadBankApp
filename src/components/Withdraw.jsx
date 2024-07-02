@@ -27,7 +27,7 @@ const Withdrawal = () => {
     const withdrawalAmount = parseFloat(values.amount);
     if (balance >= withdrawalAmount) {
       addActivity({
-        type: "Withdrawal",
+        type: "withdraw",
         message: `Withdrew $${values.amount}`,
         amount: values.amount,
       });

@@ -18,10 +18,10 @@ const Home = () => {
     }, 0);
     setTimeout(() => {
       setDynamicText3("Whatcha gonna do?");
-    }, 2000);
+    }, 500);
     setTimeout(() => {
       setShowButtons(true);
-    }, 4000);
+    }, 1000);
   }, []);
 
   return (

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useUserActivities } from "./UserActivitiesContext";
 import axios from "axios";
 
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const AllData = () => {
   const [activities, setActivities] = useState([]);

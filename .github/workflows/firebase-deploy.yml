@@ -16,7 +16,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "22.1.0" # Update to Node.js v18
+          node-version: "18" # Update to Node.js v18
 
       - name: Install dependencies
         run: npm install

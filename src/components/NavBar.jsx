@@ -1,18 +1,10 @@
 import React from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import { useAuth } from "./AuthContext";
 
 const NavigationBar = () => {
-  const navigate = useNavigate();
-  const email = localStorage.getItem("email"); // Get the user's email from localStorage
+  const { isLoggedIn, logout } = useAuth();
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("userId");
-    localStorage.removeItem("email");
-    navigate("/login");
-  };
-
-  // Define a function to determine the NavLink's class based on its active state
   const getNavLinkClass = ({ isActive }) =>
     isActive ? "nav-link active-nav-link" : "nav-link";
 
@@ -45,63 +37,59 @@ const NavigationBar = () => {
                 Home
               </NavLink>
             </li>
-            <li className="nav-item">
-              <NavLink
-                className={getNavLinkClass}
-                to="/create-account"
-                data-description="Create an account"
-              >
-                Create Account
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink
-                className={getNavLinkClass}
-                to="/login"
-                data-description="Login to account"
-              >
-                Login
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink
-                className={getNavLinkClass}
-                to="/deposit"
-                data-description="Make a deposit"
-              >
-                Deposit
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink
-                className={getNavLinkClass}
-                to="/withdrawal"
-                data-description="Make a withdrawal"
-              >
-                Withdrawal
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink
-                className={getNavLinkClass}
-                to="/all-data"
-                data-description="View all activity"
-              >
-                All Activity
-              </NavLink>
-            </li>
-          </ul>
-          <ul className="navbar-nav ms-auto">
-            {email && (
+            {!isLoggedIn && (
               <>
                 <li className="nav-item">
-                  <span className="navbar-text">{email}</span>
+                  <NavLink
+                    className={getNavLinkClass}
+                    to="/create-account"
+                    data-description="Create an account"
+                  >
+                    Create Account
+                  </NavLink>
                 </li>
                 <li className="nav-item">
-                  <button
-                    className="btn btn-link nav-link"
-                    onClick={handleLogout}
+                  <NavLink
+                    className={getNavLinkClass}
+                    to="/login"
+                    data-description="Login to account"
                   >
+                    Login
+                  </NavLink>
+                </li>
+              </>
+            )}
+            {isLoggedIn && (
+              <>
+                <li className="nav-item">
+                  <NavLink
+                    className={getNavLinkClass}
+                    to="/deposit"
+                    data-description="Make a deposit"
+                  >
+                    Deposit
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink
+                    className={getNavLinkClass}
+                    to="/withdrawal"
+                    data-description="Make a withdrawal"
+                  >
+                    Withdrawal
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink
+                    className={getNavLinkClass}
+                    to="/all-data"
+                    data-description="View all activity"
+                  >
+                    All Activity
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <button className="btn nav-link" onClick={logout}>
                     Logout
                   </button>
                 </li>

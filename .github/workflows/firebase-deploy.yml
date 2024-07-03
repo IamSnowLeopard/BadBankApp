@@ -10,6 +10,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Download service account key...
+        run: echo "Downloading service account key..."
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
       - name: Checkout repository
         uses: actions/checkout@v3
       - name: Set up Node.js
@@ -25,4 +29,4 @@ jobs:
         run: |
           echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> $GITHUB_ENV
       - name: Build and Deploy to Firebase
-        run: firebase deploy --only functions --service-account=${{ secrets.SERVICE_ACCOUNT }}
+        run: firebase deploy --only functions --service-account=${{ secrets.FIREBASE_SERVICE_ACCOUNT }} # Corrected secret reference

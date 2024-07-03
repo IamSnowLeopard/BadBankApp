@@ -13,17 +13,16 @@ export const UserActivitiesProvider = ({ children }) => {
   const token = localStorage.getItem("token");
   const userId = localStorage.getItem("userId");
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:5001/user/${userId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get(`${API_BASE_URL}/user/${userId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setBalance(response.data.balance);
         setActivities(response.data.transactions);
       } catch (error) {
@@ -33,12 +32,12 @@ export const UserActivitiesProvider = ({ children }) => {
     if (userId && token) {
       fetchData();
     }
-  }, [userId, token]);
+  }, [userId, token, API_BASE_URL]);
 
   const addActivity = async (activity) => {
     try {
       const response = await axios.post(
-        `http://localhost:5001/transactions/${activity.type.toLowerCase()}`,
+        `${API_BASE_URL}/transactions/${activity.type.toLowerCase()}`,
         {
           userId,
           amount: parseFloat(activity.amount),

@@ -9,7 +9,6 @@ export const UserActivitiesProvider = ({ children }) => {
   const [activities, setActivities] = useState([]);
   const [balance, setBalance] = useState(0);
 
-  // Retrieve token and userId from localStorage
   const token = localStorage.getItem("token");
   const userId = localStorage.getItem("userId");
 
@@ -58,7 +57,7 @@ export const UserActivitiesProvider = ({ children }) => {
 
   return (
     <UserActivitiesContext.Provider
-      value={{ activities, addActivity, balance }}
+      value={{ activities: activities || [], addActivity, balance }}
     >
       {children}
     </UserActivitiesContext.Provider>

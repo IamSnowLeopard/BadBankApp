@@ -1,29 +1,40 @@
 import React, { useEffect, useState } from "react";
-import { useUserActivities } from "./UserActivitiesContext";
 import axios from "axios";
+import { useUserActivities } from "./UserActivitiesContext";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const AllData = () => {
-  const [activities, setActivities] = useState([]);
+  const { activities, setActivities } = useUserActivities();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const token = localStorage.getItem("token");
+  const userId = localStorage.getItem("userId");
 
   useEffect(() => {
     const fetchActivities = async () => {
       try {
-        const response = await axios.get(`${API_BASE_URL}/transactions`, {
-          headers: {
-            "x-auth-token": token,
-          },
-        });
-        setActivities(response.data);
+        const response = await axios.get(
+          `${API_BASE_URL}/user/${userId}/activities`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setActivities(response.data.transactions);
       } catch (error) {
-        console.error("Error fetching activities", error);
+        setError("Error fetching activities");
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchActivities();
-  }, [token]);
+  }, [token, userId]);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
 
   return (
     <div
@@ -33,7 +44,7 @@ const AllData = () => {
       <div className="card-body">
         <h5 className="card-title">All User Activities</h5>
         <div className="card-text">
-          {activities.length > 0 ? (
+          {activities && activities.length > 0 ? (
             <ul className="list-group">
               {activities.map((activity, index) => (
                 <li key={index} className="list-group-item">

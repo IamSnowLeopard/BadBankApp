@@ -4,23 +4,18 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 
-// Define the API base URL
-const API_BASE_URL =
-  "https://us-central1-badbankbyrahmat.cloudfunctions.net/api";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-// Component to create a new account
 const CreateAccount = () => {
-  const { addActivity } = useUserActivities(); // Hook into the custom context to log user activities
-  const [formSubmitted, setFormSubmitted] = useState(false); // State to track whether the form has been submitted
+  const { addActivity } = useUserActivities();
+  const [formSubmitted, setFormSubmitted] = useState(false);
 
-  // Initial form values
   const initialValues = {
     name: "",
     email: "",
     password: "",
   };
 
-  // Form validation using Yup
   const validationSchema = Yup.object().shape({
     name: Yup.string().required("Name is required"),
     email: Yup.string()
@@ -31,26 +26,19 @@ const CreateAccount = () => {
       .required("Password is required"),
   });
 
-  // Handle form submission
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     try {
-      // Send POST request to the backend to create a new account
       const response = await axios.post(
         `${API_BASE_URL}/auth/create-account`,
         values
       );
-
-      console.log(response.data); // Log response data for debugging
       addActivity({
         type: "New account",
         message: `Account ${values.email} created`,
       });
 
-      // Update the form as submitted successfully
       setFormSubmitted(true);
-      // Re-enable the submit button
       setSubmitting(false);
-      // Reset the form fields
       resetForm({ values: "" });
     } catch (error) {
       console.error("There was an error creating the account!", error);
@@ -58,7 +46,6 @@ const CreateAccount = () => {
     }
   };
 
-  // Handler to reset the form and allow another account creation
   const handleAddAnother = () => {
     setFormSubmitted(false);
   };
@@ -82,26 +69,34 @@ const CreateAccount = () => {
                   <label htmlFor="name" className="form-label">
                     Name
                   </label>
-                  <Field type="text" name="name" className="form-control" />
+                  <Field
+                    type="text"
+                    name="name"
+                    id="name"
+                    className="form-control"
+                  />
                   <ErrorMessage
                     name="name"
                     component="div"
                     className="errorMessage"
                   />
                 </div>
-
                 <div className="mb-3">
                   <label htmlFor="email" className="form-label">
                     Email Address
                   </label>
-                  <Field type="email" name="email" className="form-control" />
+                  <Field
+                    type="email"
+                    name="email"
+                    id="email"
+                    className="form-control"
+                  />
                   <ErrorMessage
                     name="email"
                     component="div"
                     className="errorMessage"
                   />
                 </div>
-
                 <div className="mb-3">
                   <label htmlFor="password" className="form-label">
                     Password
@@ -109,6 +104,7 @@ const CreateAccount = () => {
                   <Field
                     type="password"
                     name="password"
+                    id="password"
                     className="form-control"
                   />
                   <ErrorMessage
@@ -117,7 +113,6 @@ const CreateAccount = () => {
                     className="errorMessage"
                   />
                 </div>
-
                 <button
                   type="submit"
                   className="btn btn-primary"

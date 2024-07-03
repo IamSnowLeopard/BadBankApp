@@ -27,9 +27,18 @@ const App = () => {
                 <Route path="/" element={<Home />} />
                 <Route path="/create-account" element={<CreateAccount />} />
                 <Route path="/login" element={<Login />} />
-                <ProtectedRoute path="/deposit" element={<Deposit />} />
-                <ProtectedRoute path="/withdrawal" element={<Withdrawal />} />
-                <ProtectedRoute path="/all-data" element={<AllData />} />
+                <Route
+                  path="/deposit"
+                  element={<ProtectedRoute element={Deposit} />}
+                />
+                <Route
+                  path="/withdrawal"
+                  element={<ProtectedRoute element={Withdrawal} />}
+                />
+                <Route
+                  path="/all-data"
+                  element={<ProtectedRoute element={AllData} />}
+                />
               </Routes>
             </div>
             <Footer />

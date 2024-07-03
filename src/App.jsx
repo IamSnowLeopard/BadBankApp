@@ -12,6 +12,7 @@ import Deposit from "./components/Deposit";
 import Withdrawal from "./components/Withdraw";
 import AllData from "./components/AllData";
 import Footer from "./components/Footer";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => {
   return (
@@ -23,9 +24,9 @@ const App = () => {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/create-account" element={<CreateAccount />} />
-              <Route path="/deposit" element={<Deposit />} />
-              <Route path="/withdrawal" element={<Withdrawal />} />
-              <Route path="/all-data" element={<AllData />} />
+              <ProtectedRoute path="/deposit" element={<Deposit />} />
+              <ProtectedRoute path="/withdrawal" element={<Withdrawal />} />
+              <ProtectedRoute path="/all-data" element={<AllData />} />
               <Route path="/login" element={<Login />} />
             </Routes>
           </div>

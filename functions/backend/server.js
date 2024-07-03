@@ -26,7 +26,10 @@ connection.once("open", () => {
 
 // Routes
 const authRoutes = require("./routes/auth");
+const transactionRoutes = require("./routes/transactions");
+
 app.use("/auth", authRoutes);
+app.use("/transactions", transactionRoutes);
 
 // Start the server
 app.listen(port, () => {

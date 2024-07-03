@@ -22,9 +22,9 @@ jobs:
         run: npm install
         working-directory: functions
 
-      - name: Set environment variables
+      - name: Decode and set environment variables
         run: |
-          echo "MYAPP_FIREBASE_SERVICE_ACCOUNT=${{ secrets.MYAPP_FIREBASE_SERVICE_ACCOUNT }}" >> $GITHUB_ENV
+          echo "MYAPP_FIREBASE_SERVICE_ACCOUNT=$(echo ${{ secrets.MYAPP_FIREBASE_SERVICE_ACCOUNT }} | base64 --decode)" >> $GITHUB_ENV
           echo "MYAPP_FIREBASE_DATABASE_URL=${{ secrets.MYAPP_FIREBASE_DATABASE_URL }}" >> $GITHUB_ENV
 
       - name: Build and Deploy to Firebase

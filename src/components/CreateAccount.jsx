@@ -4,6 +4,10 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 
+// Define the API base URL
+const API_BASE_URL =
+  "https://us-central1-badbankbyrahmat.cloudfunctions.net/api";
+
 // Component to create a new account
 const CreateAccount = () => {
   const { addActivity } = useUserActivities(); // Hook into the custom context to log user activities
@@ -32,7 +36,7 @@ const CreateAccount = () => {
     try {
       // Send POST request to the backend to create a new account
       const response = await axios.post(
-        "http://localhost:5001/auth/create-account",
+        `${API_BASE_URL}/auth/create-account`,
         values
       );
 

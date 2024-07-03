@@ -1,19 +1,40 @@
-/**
- * Import function triggers from their respective submodules:
- *
- * const {onCall} = require("firebase-functions/v2/https");
- * const {onDocumentWritten} = require("firebase-functions/v2/firestore");
- *
- * See a full list of supported triggers at https://firebase.google.com/docs/functions
- */
+const functions = require("firebase-functions");
+const express = require("express");
+const mongoose = require("mongoose");
+const cors = require("cors");
 
-const {onRequest} = require("firebase-functions/v2/https");
-const logger = require("firebase-functions/logger");
+// Initialize express app
+const app = express();
 
-// Create and deploy your first functions
-// https://firebase.google.com/docs/functions/get-started
+// Middleware
+app.use(
+  cors({
+    origin: true,
+  })
+);
+app.use(express.json());
 
-// exports.helloWorld = onRequest((request, response) => {
-//   logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
+// Connect to MongoDB
+mongoose.connect(
+  "mongodb+srv://rahmatmuhammad:t8ViT3z7xood8aHk@mitmern.8xe3obh.mongodb.net/?retryWrites=true&w=majority&appName=MITMERN",
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  }
+);
+
+const connection = mongoose.connection;
+connection.once("open", () => {
+  console.log("MongoDB database connection established successfully");
+});
+
+// Import routes
+const authRoutes = require("./backend/routes/auth");
+const userRoutes = require("./backend/routes/user");
+const transactionRoutes = require("./backend/routes/transactions");
+app.use("/auth", authRoutes);
+app.use("/user", userRoutes);
+app.use("/transactions", transactionRoutes);
+
+// Export the Express app as a Firebase Cloud Function
+exports.api = functions.https.onRequest(app);

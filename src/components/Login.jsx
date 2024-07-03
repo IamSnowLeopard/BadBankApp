@@ -3,6 +3,9 @@ import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+const API_BASE_URL =
+  "https://us-central1-badbankbyrahmat.cloudfunctions.net/api"; // Replace <project-id> with your actual Firebase project ID
+
 // Defines the component for the login form
 const Login = () => {
   const navigate = useNavigate(); // Hook to navigate programmatically
@@ -25,10 +28,7 @@ const Login = () => {
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
       // Send POST request to the backend to login
-      const response = await axios.post(
-        "http://localhost:5001/auth/login",
-        values
-      ); // Ensure the port is 5001
+      const response = await axios.post(`${API_BASE_URL}/auth/login`, values);
 
       console.log("Login Info:", response.data);
       const { token, userId } = response.data;

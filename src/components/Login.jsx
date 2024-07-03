@@ -2,21 +2,19 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import React, { useState } from "react";
 
-const API_BASE_URL =
-  "https://us-central1-badbankbyrahmat.cloudfunctions.net/api"; // Replace <project-id> with your actual Firebase project ID
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
-// Defines the component for the login form
 const Login = () => {
-  const navigate = useNavigate(); // Hook to navigate programmatically
+  const navigate = useNavigate();
+  const [loginError, setLoginError] = useState("");
 
-  // Initial form values for email and password
   const initialValues = {
     email: "",
     password: "",
   };
 
-  // Validation for the login form using Yup
   const validationSchema = Yup.object().shape({
     email: Yup.string()
       .email("Invalid email address")
@@ -24,21 +22,19 @@ const Login = () => {
     password: Yup.string().required("Password is required"),
   });
 
-  // Handles form submission
   const handleSubmit = async (values, { setSubmitting }) => {
     try {
-      // Send POST request to the backend to login
       const response = await axios.post(`${API_BASE_URL}/auth/login`, values);
 
-      console.log("Login Info:", response.data);
-      const { token, userId } = response.data;
+      const { token, userId, email } = response.data;
       localStorage.setItem("token", token);
       localStorage.setItem("userId", userId);
+      localStorage.setItem("email", email);
 
-      navigate("/all-data"); // Redirect to the All Data page
-      setSubmitting(false); // Reset the form's submitting state
+      navigate("/all-data");
+      setSubmitting(false);
     } catch (error) {
-      console.error("There was an error logging in!", error);
+      setLoginError("Invalid email or password");
       setSubmitting(false);
     }
   };
@@ -50,6 +46,7 @@ const Login = () => {
     >
       <div className="card-body">
         <h5 className="card-title">Login</h5>
+        {loginError && <div className="alert alert-danger">{loginError}</div>}
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}

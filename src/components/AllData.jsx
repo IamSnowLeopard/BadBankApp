@@ -1,7 +1,29 @@
+import React, { useEffect, useState } from "react";
 import { useUserActivities } from "./UserActivitiesContext";
+import axios from "axios";
+
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 const AllData = () => {
-  const { activities } = useUserActivities();
+  const [activities, setActivities] = useState([]);
+  const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    const fetchActivities = async () => {
+      try {
+        const response = await axios.get(`${API_BASE_URL}/transactions`, {
+          headers: {
+            "x-auth-token": token,
+          },
+        });
+        setActivities(response.data);
+      } catch (error) {
+        console.error("Error fetching activities", error);
+      }
+    };
+
+    fetchActivities();
+  }, [token]);
 
   return (
     <div

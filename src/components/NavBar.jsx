@@ -1,7 +1,17 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const NavigationBar = () => {
+  const navigate = useNavigate();
+  const email = localStorage.getItem("email"); // Get the user's email from localStorage
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("email");
+    navigate("/login");
+  };
+
   // Define a function to determine the NavLink's class based on its active state
   const getNavLinkClass = ({ isActive }) =>
     isActive ? "nav-link active-nav-link" : "nav-link";
@@ -80,6 +90,23 @@ const NavigationBar = () => {
                 All Activity
               </NavLink>
             </li>
+          </ul>
+          <ul className="navbar-nav ms-auto">
+            {email && (
+              <>
+                <li className="nav-item">
+                  <span className="navbar-text">{email}</span>
+                </li>
+                <li className="nav-item">
+                  <button
+                    className="btn btn-link nav-link"
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </button>
+                </li>
+              </>
+            )}
           </ul>
         </div>
       </div>

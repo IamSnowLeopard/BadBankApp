@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const User = require("../models/user.model");
 const Transaction = require("../models/transaction.model");
-const auth = require("../middleware/auth");
+const auth = require("../middleware/authMiddleware");
 
 // Get User Data (balance and transactions)
 router.get("/:userId", auth, async (req, res) => {

@@ -5,11 +5,11 @@ const cors = require("cors");
 require("dotenv").config(); // Load environment variables from .env file
 
 // Parse the service account JSON string
-const serviceAccount = JSON.parse(process.env.MYAPP_FIREBASE_SERVICE_ACCOUNT);
+const serviceAccount = JSON.parse(process.env.SERVICE_ACCOUNT);
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: process.env.MYAPP_FIREBASE_DATABASE_URL,
+  databaseURL: process.env.DATABASE_URL,
 });
 
 const app = express();
@@ -17,7 +17,7 @@ app.use(cors({ origin: true }));
 app.use(express.json());
 
 // Import your server file
-const server = require("./backend/server.js");
+const server = require("./backend/server");
 
 // Use the Express app from your server file
 app.use(server);

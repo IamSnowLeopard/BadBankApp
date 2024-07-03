@@ -1,41 +1,32 @@
-name: Deploy to Firebase
+name: Build and Deploy to Firebase
 
 on:
   push:
     branches:
-      - main # Change this to your default branch if it's not 'main'
+      - main
 
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout repository
         uses: actions/checkout@v3
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "22.1.0"
+          node-version: "16"
 
-      - name: Install Dependencies
+      - name: Install dependencies
         run: npm install
+        working-directory: functions
 
-      - name: Build Project
-        run: npm run build
-
-      - name: Deploy to Firebase Hosting
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+      - name: Set environment variables
         run: |
-          npm install -g firebase-tools
-          firebase deploy --only hosting
+          echo "MYAPP_FIREBASE_SERVICE_ACCOUNT=${{ secrets.MYAPP_FIREBASE_SERVICE_ACCOUNT }}" >> $GITHUB_ENV
+          echo "MYAPP_FIREBASE_DATABASE_URL=${{ secrets.MYAPP_FIREBASE_DATABASE_URL }}" >> $GITHUB_ENV
 
-      - name: Deploy to Firebase Functions
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-        run: |
-          npm install -g firebase-tools
-          cd functions
-          npm install
-          firebase deploy --only functions
+      - name: Build and Deploy to Firebase
+        run: npm run deploy
+        working-directory: functions

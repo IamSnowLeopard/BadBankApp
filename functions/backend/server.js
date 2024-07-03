@@ -9,7 +9,11 @@ const port = process.env.PORT || 5001;
 // Middleware
 app.use(
   cors({
-    origin: "http://localhost:5173", // Replace with your frontend's origin
+    origin: [
+      "http://localhost:5173",
+      "https://badbankbyrahmat.web.app/",
+      "https://badbankbyrahmat.firebaseapp.com/",
+    ], // Replace with your frontend's origin
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     preflightContinue: false,
     optionsSuccessStatus: 204,

@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "deploy": "firebase deploy --only functions"
+    "deploy": "firebase deploy --project badbankbyrahmat --service-account=SERVICE_ACCOUNT"
   },
   "keywords": [],
   "author": "",

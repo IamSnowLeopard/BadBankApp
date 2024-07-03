@@ -14,14 +14,11 @@ app.use(
 );
 app.use(express.json());
 
-// Connect to MongoDB
-mongoose.connect(
-  "mongodb+srv://rahmatmuhammad:t8ViT3z7xood8aHk@mitmern.8xe3obh.mongodb.net/?retryWrites=true&w=majority&appName=MITMERN",
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  }
-);
+const uri = functions.config().mongodb.uri;
+mongoose.connect(uri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 const connection = mongoose.connection;
 connection.once("open", () => {
